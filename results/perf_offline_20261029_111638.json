@@ -1,0 +1,318 @@
+{
+  "timestamp": "20261029_111638",
+  "mode": "offline",
+  "profile": {
+    "steps": {
+      "preprocess": {
+        "ms": 0.14,
+        "tokens_in": 0,
+        "tokens_out": 0,
+        "cost": 0.0
+      },
+      "retrieve": {
+        "ms": 0.16,
+        "tokens_in": 0,
+        "tokens_out": 0,
+        "cost": 0.0
+      },
+      "generate": {
+        "ms": 1089.03,
+        "tokens_in": 249.2,
+        "tokens_out": 45.5,
+        "cost": 6.471749999999999e-05
+      }
+    },
+    "cost_components": {
+      "system prompt (input)": 1.545e-05,
+      "retrieved context (input)": 1.82625e-05,
+      "user question + format (input)": 3.675e-06,
+      "completion (output)": 2.7329999999999998e-05
+    },
+    "latency_components": {
+      "LLM decode (output tokens)": 662.3351,
+      "LLM time-to-first-token (prefill + network)": 426.4928414,
+      "local steps (preprocess + retrieve)": 0.30000000000000004
+    },
+    "summary": {
+      "avg_cost": 6.471749999999999e-05,
+      "avg_ms": 1089.3325805500008,
+      "model": "gpt-4o-mini",
+      "avg_in": 249.25,
+      "avg_out": 45.55
+    }
+  },
+  "projection_baseline": {
+    "1000/day": 1.94,
+    "10000/day": 19.42,
+    "100000/day": 194.15
+  },
+  "cost_drivers": [
+    "completion (output): 42% of cost - output tokens cost 4x input tokens ($0.6/1M vs $0.15/1M) and the bot writes up to 3 sentences per answer.",
+    "retrieved context (input): 28% of cost - top_k=3 chunks (~122 tokens) are re-sent on every call even when one chunk holds the answer.",
+    "system prompt (input): 24% of cost - the 103-token v2 safety/format prompt is identical on every call but is billed every time."
+  ],
+  "latency_bottlenecks": [
+    "LLM decode (output tokens): 662 ms (61% of latency) - decoding is sequential at ~14ms per output token, so every extra sentence adds latency.",
+    "LLM time-to-first-token (prefill + network): 426 ms (39% of latency) - each call pays a fixed network + queueing + prefill cost before the first token, growing with the prompt length."
+  ],
+  "retrieval_sweep": [
+    {
+      "min_rel_score": 0.0,
+      "overall": 0.84,
+      "dims": {
+        "correctness": 0.733,
+        "groundedness": 1.0,
+        "completeness": 0.733,
+        "refusal_appropriateness": 1.0,
+        "overall": 0.84
+      },
+      "avg_context_tokens": 120.8,
+      "avg_cost": 6.2825e-05
+    },
+    {
+      "min_rel_score": 0.4,
+      "overall": 0.83,
+      "dims": {
+        "correctness": 0.717,
+        "groundedness": 1.0,
+        "completeness": 0.717,
+        "refusal_appropriateness": 1.0,
+        "overall": 0.83
+      },
+      "avg_context_tokens": 73.9,
+      "avg_cost": 5.4329999999999997e-05
+    },
+    {
+      "min_rel_score": 0.5,
+      "overall": 0.85,
+      "dims": {
+        "correctness": 0.75,
+        "groundedness": 1.0,
+        "completeness": 0.75,
+        "refusal_appropriateness": 1.0,
+        "overall": 0.85
+      },
+      "avg_context_tokens": 69,
+      "avg_cost": 5.3414999999999996e-05
+    },
+    {
+      "min_rel_score": 0.6,
+      "overall": 0.85,
+      "dims": {
+        "correctness": 0.75,
+        "groundedness": 1.0,
+        "completeness": 0.75,
+        "refusal_appropriateness": 1.0,
+        "overall": 0.85
+      },
+      "avg_context_tokens": 66.4,
+      "avg_cost": 5.299e-05
+    },
+    {
+      "min_rel_score": 0.7,
+      "overall": 0.85,
+      "dims": {
+        "correctness": 0.75,
+        "groundedness": 1.0,
+        "completeness": 0.75,
+        "refusal_appropriateness": 1.0,
+        "overall": 0.85
+      },
+      "avg_context_tokens": 58.3,
+      "avg_cost": 5.175e-05
+    },
+    {
+      "min_rel_score": 0.8,
+      "overall": 0.84,
+      "dims": {
+        "correctness": 0.733,
+        "groundedness": 1.0,
+        "completeness": 0.733,
+        "refusal_appropriateness": 1.0,
+        "overall": 0.84
+      },
+      "avg_context_tokens": 51,
+      "avg_cost": 5.0175e-05
+    }
+  ],
+  "chosen_threshold": 0.8,
+  "sensitivity": [
+    {
+      "hit_rate": 0.0,
+      "cost": 4.680836363636363e-05,
+      "ms": 977.684061527274
+    },
+    {
+      "hit_rate": 0.2,
+      "cost": 3.7528960296846006e-05,
+      "ms": 801.6859228593704
+    },
+    {
+      "hit_rate": 0.4,
+      "cost": 2.8249556957328385e-05,
+      "ms": 625.6877841914666
+    },
+    {
+      "hit_rate": 0.6,
+      "cost": 1.897015361781076e-05,
+      "ms": 449.68964552356294
+    },
+    {
+      "hit_rate": 0.8,
+      "cost": 9.690750278293133e-06,
+      "ms": 273.69150685565916
+    }
+  ],
+  "gates": [
+    {
+      "stage": "opt1 semantic cache (cold pass)",
+      "dims": {
+        "correctness": 0.733,
+        "groundedness": 1.0,
+        "completeness": 0.733,
+        "refusal_appropriateness": 1.0,
+        "overall": 0.84
+      },
+      "drops": {
+        "correctness": 0.0,
+        "groundedness": 0.0,
+        "completeness": 0.0,
+        "refusal_appropriateness": 0.0
+      },
+      "worst_dim": "correctness",
+      "worst_drop": 0.0,
+      "stop": false,
+      "warm": {
+        "stage": "opt1 semantic cache (warm reworded replay)",
+        "dims": {
+          "correctness": 0.733,
+          "groundedness": 1.0,
+          "completeness": 0.733,
+          "refusal_appropriateness": 1.0,
+          "overall": 0.84
+        },
+        "drops": {
+          "correctness": 0.0,
+          "groundedness": 0.0,
+          "completeness": 0.0,
+          "refusal_appropriateness": 0.0
+        },
+        "worst_dim": "correctness",
+        "worst_drop": 0.0,
+        "stop": false
+      },
+      "warm_hits": 28,
+      "max_pairwise_sim_between_different_questions": [
+        0.607,
+        "E04",
+        "H01"
+      ]
+    },
+    {
+      "stage": "opt1 semantic cache (warm reworded replay)",
+      "dims": {
+        "correctness": 0.733,
+        "groundedness": 1.0,
+        "completeness": 0.733,
+        "refusal_appropriateness": 1.0,
+        "overall": 0.84
+      },
+      "drops": {
+        "correctness": 0.0,
+        "groundedness": 0.0,
+        "completeness": 0.0,
+        "refusal_appropriateness": 0.0
+      },
+      "worst_dim": "correctness",
+      "worst_drop": 0.0,
+      "stop": false
+    },
+    {
+      "stage": "opt1+opt2 (cache + retrieval threshold 0.8)",
+      "dims": {
+        "correctness": 0.733,
+        "groundedness": 1.0,
+        "completeness": 0.733,
+        "refusal_appropriateness": 1.0,
+        "overall": 0.84
+      },
+      "drops": {
+        "correctness": 0.0,
+        "groundedness": 0.0,
+        "completeness": 0.0,
+        "refusal_appropriateness": 0.0
+      },
+      "worst_dim": "correctness",
+      "worst_drop": 0.0,
+      "stop": false
+    }
+  ],
+  "traffic": {
+    "baseline": {
+      "avg_cost": 6.35975e-05,
+      "avg_ms": 1055.5880104199996,
+      "p95_ms": 1208.121687000002,
+      "hit_rate": 0.0,
+      "false_hits": 0,
+      "quality": {
+        "correctness": 0.88,
+        "groundedness": 1.0,
+        "completeness": 0.88,
+        "refusal_appropriateness": 1.0,
+        "overall": 0.928
+      }
+    },
+    "opt1": {
+      "avg_cost": 1.1183966666666667e-05,
+      "avg_ms": 269.68090424000013,
+      "p95_ms": 1231.6941439999955,
+      "hit_rate": 0.8166666666666667,
+      "false_hits": 0,
+      "quality": {
+        "correctness": 0.88,
+        "groundedness": 1.0,
+        "completeness": 0.88,
+        "refusal_appropriateness": 1.0,
+        "overall": 0.928
+      }
+    },
+    "opt2": {
+      "avg_cost": 8.917466666666667e-06,
+      "avg_ms": 259.02499530000057,
+      "p95_ms": 1141.629987000011,
+      "hit_rate": 0.8166666666666667,
+      "false_hits": 0,
+      "quality": {
+        "correctness": 0.795,
+        "groundedness": 1.0,
+        "completeness": 0.795,
+        "refusal_appropriateness": 1.0,
+        "overall": 0.877
+      }
+    }
+  },
+  "baseline_eval": {
+    "correctness": 0.733,
+    "groundedness": 1.0,
+    "completeness": 0.733,
+    "refusal_appropriateness": 1.0,
+    "overall": 0.84
+  },
+  "projection": {
+    "baseline": {
+      "1000/day": 1.91,
+      "10000/day": 19.08,
+      "100000/day": 190.79
+    },
+    "opt1": {
+      "1000/day": 0.34,
+      "10000/day": 3.36,
+      "100000/day": 33.55
+    },
+    "opt2": {
+      "1000/day": 0.27,
+      "10000/day": 2.68,
+      "100000/day": 26.75
+    }
+  }
+}
